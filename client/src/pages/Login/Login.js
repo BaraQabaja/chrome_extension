@@ -58,11 +58,13 @@ const Login = () => {
 const navigate=useNavigate()
 const facebookLoginHandler=()=>{
     // fetchPost();
-    navigate("home")
+    // window.open("http://localhost:5000/api/v1/auth/facebook", "_self");
 
 }
 const googleLoginHandler=()=>{
-    
+  chrome.tabs.update({ url: 'http://localhost:5000/auth/google/callback' });
+  // window.open("http://localhost:5000/auth/google/callback", "_self");
+
 }
 
   const { flag, value } = message;

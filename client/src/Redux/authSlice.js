@@ -6,7 +6,7 @@ export const postLogin = createAsyncThunk("login/postLogin", async (data) => {
 
   console.log(data);
   console.log("data");
-  const res = await axios.post("http://127.0.0.1:4000/api/login", {
+  const res = await axios.post("http://127.0.0.1:5000/api/login", {
     username: data.username,
     password: data.password,
   });

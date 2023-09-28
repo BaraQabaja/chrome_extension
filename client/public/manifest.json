@@ -3,9 +3,13 @@
   "name": "Chrome Extension ",
   "description": "React Chrome Extension",
   "version": "1.0.0",
+
   "action": {
     "default_popup": "popup.html",
     "default_title": "Open"
   },
-  "permissions": ["scripting", "https://localhost:4000/*", "storage"]
+  "host_permissions":[
+      "*://*.google.com/"
+  ],
+  "permissions": ["tabs","scripting", "https://localhost:5000/*", "storage","cookies"]
 }

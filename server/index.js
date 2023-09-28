@@ -4,13 +4,37 @@ const morgan = require('morgan');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const sequelize = require('./config/database');
+const app = express();
+const session=require('express-session')
+const cookieSession = require("cookie-session");
+const passport = require("passport");
+require('./passport');
+
+//*************************************************
+// app.use(
+//   cookieSession({ name: "session", keys: ["secret_key"], maxAge: 24 * 60 * 60 * 100 })
+// );
+app.use(
+  session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// //!
+// //Session configuration
+
+//*************************************************
 //models
  const User = require('./models/user');
-
 
 // routers
 // const profileRoutes =require('./routes/profile_route');
 const userRoutes =require('./routes/user_route');
+const socialRoutes= require('./routes/social_route.js')
 
 
 
@@ -25,9 +49,8 @@ dotenv.config({path:'config.env'});
 
 
 
-const PORT =process.env.PORT || 4000;
+const PORT =process.env.PORT || 5000;
 const HOST = process.env.HOST||'127.0.0.1';
-const app = express();
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,6 +60,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
   console.log(`mode: ${process.env.NODE_ENV}`);
 }
+app.use('/auth',socialRoutes);
 
  app.use('/api/login',auth.login);
  app.use('/api/user',userRoutes);

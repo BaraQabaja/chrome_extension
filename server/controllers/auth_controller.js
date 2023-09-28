@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-//models
 
+
+//models
 const User = require('../models/user');
 
 
@@ -10,9 +11,14 @@ const dotenv = require('dotenv');
 dotenv.config({path:'config.env'});
 // create token functions
 const createToken =require('../utils/createToken')
-// const createAdminToken =require('../utils/createAdminToken')
 
 
+//**********************passport config************************** 
+
+
+
+
+//************************************************* 
 
 
 
@@ -83,36 +89,10 @@ exports.login = async (req,res,next)=>{
 
  
 
-//   exports.protectAdmin = async (req, res, next) => {
-//     let token;
-//     if (
-//       req.headers.authorization &&
-//       req.headers.authorization.startsWith('Bearer')
-//     ) {
-//       token = req.headers.authorization.split(' ')[1];
-//     }
-//     if (!token) {
-//       return next(
-//           res.send('You are not login, Please login to get access this route')
-//       );
-//     }
-  
-//     // 2) Verify token (no change happens, expired token)
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  
-//     // 3) Check if user exists
-//     const currentAdmin = await Admin.findByPk(decoded.adminId);
-//     if (!currentAdmin) {
-//       res.send('The user that belong to this token does no longer exist')
-//     }
-//     req.admin = currentAdmin;
-//     next();
-// };
 
- 
 
   exports.logout = async (req, res, next) => {
-    User.findByPk(req.user.id)
+    User.findByPk(req.user.username)
     .then(async user => {
       if(user){
       user.logoutAt=Date.now();
