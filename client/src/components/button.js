@@ -1,11 +1,6 @@
-// import React from 'react'
-// import PropTypes from 'prop-types'
+import classes from './button.module.css'
+const Button=()=>{
+    return <div className={classes.button}>button</div>
+}
 
-// export default (WrappedComponent) => {
-//   const hocComponent = ({ ...props }) => <WrappedComponent {...props} />
-
-//   hocComponent.propTypes = {}
-
-//   return hocComponent
-// }
-console.log("hiiii")
+export default Button

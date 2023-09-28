@@ -1,11 +1,11 @@
-
-import './App.css';
+import Button from "./components/button";
+import "./App.css";
+import Login from "./pages/Login/Login";
 
 function App() {
   return (
     <div className="App">
-      <h1>chrome extension</h1>
-      <h1>chrome extension</h1><h1>chrome extension</h1><h1>chrome extension</h1><h1>chrome extension</h1>
+     <Login/>
     </div>
   );
 }
