@@ -7,6 +7,5 @@
     "default_popup": "popup.html",
     "default_title": "Open"
   },
-  "permissions": ["scripting", "https://localhost:4000/*"]
-  
+  "permissions": ["scripting", "https://localhost:4000/*", "storage"]
 }

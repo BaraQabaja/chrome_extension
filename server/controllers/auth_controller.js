@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 //models
 
-// const User = require('../models/user');
+const User = require('../models/user');
 
 
 const dotenv = require('dotenv');
@@ -19,18 +19,18 @@ const createToken =require('../utils/createToken')
 
 
 exports.login = async (req,res,next)=>{
-    const id =req.body.id;
+    const username =req.body.username;
     const password =req.body.password;
-    res.status(200).json({ password,id});
-    //   User.findByPk(id).then(async (user)=>{
-    //     if(!user|| !(await bcrypt.compare(password, user.password))){
-    //       return res.send('Incorrect email or password');
-    //     }
-    //     const token =createToken(user.id);
-    //     res.status(200).json({ user:user,token});
-    //     }).catch ((err) =>{
-    //       res.status(500).send(err.message || "Something went wrong");
-    //     });
+    // res.status(200).json({ password,user});
+      User.findByPk(username).then(async (user)=>{
+        if(!user|| !(await bcrypt.compare(password, user.password))){
+          return res.send('Incorrect username or password');
+        }
+        const token =createToken(user.username);
+        res.status(200).json({ user:user,token});
+        }).catch ((err) =>{
+          res.status(500).send(err.message || "Something went wrong");
+        });
   };
 
 

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 // import notify from './../useNotifaction';
-// import { useDispatch, useSelector } from "react-redux";
-// import { postLogin, storeUserRole } from "../../Redux/loginSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { postLogin, storeUserRole } from "../../Redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const LoginHook = () => {
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [empId, setEmpId] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(true);
   const [isPress, setIsPress] = useState(false);
@@ -16,12 +16,13 @@ const LoginHook = () => {
     flag: false,
     value: "",
   });
-//   const {loginRes,statusOfLogin,userRole}=useSelector((state)=>state.login)
+  const { loginRes, statusOfLogin } = useSelector((state) => state.auth);
+  console.log("loginRes");
 
-//Incorrect email or password
-  const onChangeEmpId = (e) => {
-    setEmpId(e.target.value);
-   
+  console.log(loginRes);
+  //Incorrect username or password
+  const onChangeUsername = (e) => {
+    setUsername(e.target.value);
   };
   const onChangePassword = (e) => {
     setPassword(e.target.value);
@@ -30,65 +31,44 @@ const LoginHook = () => {
     e.preventDefault();
     setIsPress(true);
     setLoading(true);
-    // await dispatch(postLogin({
-    //     id:empId,
-    //     password:password
-    // }))
-  
+    await dispatch(
+      postLogin({
+        username: username,
+        password: password,
+      })
+    );
+
     setLoading(false);
     setIsPress(false);
   };
 
   useEffect(() => {
-    // if (loading === false) {
-    //   if (loginRes) {
-     
-    //     if (loginRes.token) {
-    //       localStorage.setItem("token", loginRes.token);
-   
+    console.log(loginRes)
+    if (loading === false) {
+      if (loginRes) {
+        if (loginRes.token) {
+          localStorage.setItem("token", loginRes.token);
 
-          
-    //        localStorage.setItem("role",loginRes.employee.role)
+          setTimeout(() => {
+            navigate("home");
+          }, 1000);
+        } else if (loginRes === "Incorrect username or password") {
+          localStorage.removeItem("token",loginRes.token);
 
-          // dispatch(storeUserRole("employee"))
-        //   setTimeout(() => {
-        //    switch(loginRes.employee.role){
-        //     case "employee":
-        //       navigate("/")
-        //       break;
-        //       case "sec_manager":
-        //       navigate("/depmanager")
-        //       break;
-        //       case "manager":
-        //       navigate("/admin/home")
-        //       break;
-        //       default:
-        //         navigate("/login")
-        //    }
-            
-        //   }, 1500);
-       // }
+          setMessage({
+            flag: true,
+            value: "Your username or password is uncorrect",
+          });
+        }
 
-        // else if (loginRes === "Incorrect email or password") {
-        //   localStorage.removeItem("token",loginRes.token);
-        //   // localStorage.removeItem("user");
-        //   // notify("كلمة السر او الايميل خطا", "error")
-          
-        //   setMessage({
-        //     flag:true,
-        //     value:"Your username or password is uncorrect"
-        //   });
-        // }
-     
-        // setLoading(true);
-    //  }
-    //}
- 
+        setLoading(true);
+      }
+    }
   }, [loading]);
 
   return [
-    empId,
-    onChangeEmpId,
+    username,
+    onChangeUsername,
     password,
     loading,
     onChangePassword,

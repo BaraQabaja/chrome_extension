@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import classes from "./Login.module.css";
 import LoginHook from "./../../hook/auth/login-hook";
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   // const [password, setPassword] = useState("");
-  // const [empNum, setEmpNum] = useState(0);
+  // const [empNum, setEmpNum] = useState("");
   const [
-    empId,
-    onChangeEmpId,
+    username,
+    onChangeUsername,
     password,
     loading,
     onChangePassword,
@@ -17,20 +18,20 @@ const Login = () => {
   ] = LoginHook();
 //++++++++++++++++++++++++++++++++
 
-const [posts, setPosts] = useState([]);
+// const [posts, setPosts] = useState([]);
 
-const fetchPost = async () => {
-  try {
-    const res = await axios.post("http://127.0.0.1:4000/api/login", {
-        id:1,
-        password: "0599",
-      });
-console.log("hi",res)
-    setPosts(res.data.id);
-  } catch (err) {
-    console.error(err);
-  }
-};
+// const fetchPost = async () => {
+//   try {
+//     const res = await axios.post("http://127.0.0.1:4000/api/login", {
+//         id:1,
+//         password: "0599",
+//       });
+// console.log("hi",res)
+//     setPosts(res.data.id);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
 
 // useEffect(()=> {
 
@@ -53,8 +54,11 @@ console.log("hi",res)
     
 //       console.log(  fetchd());
 // }, []);
+
+const navigate=useNavigate()
 const facebookLoginHandler=()=>{
-    fetchPost();
+    // fetchPost();
+    navigate("home")
 
 }
 const googleLoginHandler=()=>{
@@ -76,9 +80,9 @@ const googleLoginHandler=()=>{
             <p>Username</p>
             <input
               required
-              value={empId}
+              value={username}
               placeholder="username"
-              onChange={(e) => onChangeEmpId(e)}
+              onChange={(e) => onChangeUsername(e)}
             />
           </label>
           <label>
@@ -95,7 +99,7 @@ const googleLoginHandler=()=>{
           <input type="submit" value="login" />
         </form>
 
-        <button className={classes.facebook_btn} onClick={facebookLoginHandler}>Facebook {posts}</button>
+        <button className={classes.facebook_btn} onClick={facebookLoginHandler}>Facebook</button>
         <button className={classes.google_btn} onClick={googleLoginHandler}>Google</button>
       </div>
     </div>
