@@ -12,6 +12,10 @@ A short description of your project.
 
 ## Installation
 
+**Install Postgresql** 
+- Install postgresql ([https://www.postgresql.org/download/](https://www.postgresql.org/download/))
+- Open PgAdmin 4 then create a DB. 
+
 **Clone the Repository:**
 
 - Go to the GitHub repository of the project ([https://github.com/BaraQabaja/chrome_extension](https://github.com/BaraQabaja/chrome_extension)) you want to run.
