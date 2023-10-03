@@ -11,5 +11,7 @@
   "host_permissions":[
       "*://*.google.com/"
   ],
-  "permissions": ["tabs","scripting", "https://localhost:5000/*", "storage","cookies"]
+  "permissions": ["http://localhost/*","tabs","scripting", "https://localhost:5000/*","https://apis.google.com/js/api.js", "storage","cookies", "https://www.googleapis.com/","activeTab","script-src-elem"]
+  
+  
 }

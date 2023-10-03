@@ -71,3 +71,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
  // "proxy": "http://127.0.0.1:4000/api/"
+   clientID: '951278813421-dts8qtaf6brboipgio40pl03fopkjkuj.apps.googleusercontent.com',
+      clientSecret: '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',

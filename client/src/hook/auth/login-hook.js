@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-// import notify from './../useNotifaction';
 import { useDispatch, useSelector } from "react-redux";
-import { postLogin, storeUserRole } from "../../Redux/authSlice";
+import { postLogin } from "../../Redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const LoginHook = () => {
@@ -17,10 +16,8 @@ const LoginHook = () => {
     value: "",
   });
   const { loginRes, statusOfLogin } = useSelector((state) => state.auth);
-  console.log("loginRes");
-
-  console.log(loginRes);
-  //Incorrect username or password
+ 
+  //Incorrect email or password
   const onChangeUsername = (e) => {
     setUsername(e.target.value);
   };
@@ -31,9 +28,10 @@ const LoginHook = () => {
     e.preventDefault();
     setIsPress(true);
     setLoading(true);
+
     await dispatch(
       postLogin({
-        username: username,
+        email: username,
         password: password,
       })
     );
@@ -43,6 +41,10 @@ const LoginHook = () => {
   };
 
   useEffect(() => {
+    //to keep user logged in if he has a token after he prev logged in
+    // if(localStorage.getItem("token")){
+    //   navigate("home");
+    // }
     console.log(loginRes)
     if (loading === false) {
       if (loginRes) {
@@ -52,12 +54,12 @@ const LoginHook = () => {
           setTimeout(() => {
             navigate("home");
           }, 1000);
-        } else if (loginRes === "Incorrect username or password") {
+        } else if (loginRes === "Incorrect email or password") {
           localStorage.removeItem("token",loginRes.token);
 
           setMessage({
             flag: true,
-            value: "Your username or password is uncorrect",
+            value: "Your email or password is Incorrect",
           });
         }
 

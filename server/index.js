@@ -1,40 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const sequelize = require('./config/database');
 const app = express();
-const session=require('express-session')
-const cookieSession = require("cookie-session");
-const passport = require("passport");
-require('./passport');
+app.use(express.json());
+const rateLimit = require("express-rate-limit");
 
-//*************************************************
-// app.use(
-//   cookieSession({ name: "session", keys: ["secret_key"], maxAge: 24 * 60 * 60 * 100 })
-// );
-app.use(
-  session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+//(Security) rate limiting middleware 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
 
-// //!
-// //Session configuration
 
-//*************************************************
-//models
- const User = require('./models/user');
 
 // routers
-// const profileRoutes =require('./routes/profile_route');
 const userRoutes =require('./routes/user_route');
-const socialRoutes= require('./routes/social_route.js')
 
 
 
@@ -60,13 +42,14 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
   console.log(`mode: ${process.env.NODE_ENV}`);
 }
-app.use('/auth',socialRoutes);
 
+
+//apply requests limiter as a middleware
+app.use('/api',limiter) 
+//Here i applied rate limiter to limit the incomming requests rate, auth.login function to handle the creation of the user db entity and his token token and auth.protect to to handle token issues 
  app.use('/api/login',auth.login);
  app.use('/api/user',userRoutes);
-//app.use('/api/profile',profileRoutes);
-
-//app.post('/api/logout',auth.protect,auth.logout);
+app.post('/api/logout',auth.protect,auth.logout);
 
 
 

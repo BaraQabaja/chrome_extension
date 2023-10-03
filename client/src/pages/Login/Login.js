@@ -1,11 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import classes from "./Login.module.css";
 import LoginHook from "./../../hook/auth/login-hook";
-import axios from "axios"
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { postCreateUser } from "../../Redux/userSlice";
 const Login = () => {
-  // const [password, setPassword] = useState("");
-  // const [empNum, setEmpNum] = useState("");
+  const dispatch = useDispatch();
+  const [showReg, setShowReg] = useState(false);
+  const [createEmail, setCreateEmail] = useState("");
+  const [createUsername, setCreateUsername] = useState("");
+  const [createPassword, setCreatePassword] = useState("");
+
+  const createUserFormHandler = async (event) => {
+    event.preventDefault();
+
+    await dispatch(
+      postCreateUser({
+        createEmail,
+        createUsername,
+        createPassword,
+      })
+    );
+    setCreateEmail("");
+    setCreateUsername("");
+    setCreatePassword("");
+  };
+
   const [
     username,
     onChangeUsername,
@@ -16,56 +35,6 @@ const Login = () => {
     isPress,
     message,
   ] = LoginHook();
-//++++++++++++++++++++++++++++++++
-
-// const [posts, setPosts] = useState([]);
-
-// const fetchPost = async () => {
-//   try {
-//     const res = await axios.post("http://127.0.0.1:4000/api/login", {
-//         id:1,
-//         password: "0599",
-//       });
-// console.log("hi",res)
-//     setPosts(res.data.id);
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
-
-// useEffect(()=> {
-
-//   fetchPost();
-
-// }, [])
-
-
-//++++++++++++++++++++++++++++++++++++
-// useEffect(async() => {
-//    async function fetchd (){
-//         const res = await axios.post("/login", {
-//             id:1,
-//             password: "0599",
-//           });
-
-//           return res
-//     }
-    
-    
-//       console.log(  fetchd());
-// }, []);
-
-const navigate=useNavigate()
-const facebookLoginHandler=()=>{
-    // fetchPost();
-    // window.open("http://localhost:5000/api/v1/auth/facebook", "_self");
-
-}
-const googleLoginHandler=()=>{
-  chrome.tabs.update({ url: 'http://localhost:5000/auth/google/callback' });
-  // window.open("http://localhost:5000/auth/google/callback", "_self");
-
-}
 
   const { flag, value } = message;
 
@@ -79,11 +48,11 @@ const googleLoginHandler=()=>{
         ) : null}
         <form onSubmit={(e) => onSubmit(e)}>
           <label>
-            <p>Username</p>
+            <p>Email</p>
             <input
               required
               value={username}
-              placeholder="username"
+              placeholder="Email"
               onChange={(e) => onChangeUsername(e)}
             />
           </label>
@@ -101,8 +70,39 @@ const googleLoginHandler=()=>{
           <input type="submit" value="login" />
         </form>
 
-        <button className={classes.facebook_btn} onClick={facebookLoginHandler}>Facebook</button>
-        <button className={classes.google_btn} onClick={googleLoginHandler}>Google</button>
+        <p onClick={() => setShowReg(!showReg)}>Register ?</p>
+        {showReg && (
+          <form action="get" onSubmit={createUserFormHandler}>
+            <input
+              required
+              placeholder="Email"
+              type="email"
+              name="createEmail"
+              value={createEmail}
+              onChange={(event) => setCreateEmail(event.target.value)}
+            />
+
+            <input
+              placeholder="Username"
+              required
+              type="text"
+              name="createUsername"
+              value={createUsername}
+              onChange={(event) => setCreateUsername(event.target.value)}
+            />
+
+            <input
+              placeholder="password"
+              required
+              type="password"
+              name="createPassword"
+              value={createPassword}
+              onChange={(event) => setCreatePassword(event.target.value)}
+            />
+
+            <input type="submit" value="Create" />
+          </form>
+        )}
       </div>
     </div>
   );

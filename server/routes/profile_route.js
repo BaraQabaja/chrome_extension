@@ -4,7 +4,7 @@ const router = express.Router();
 const auth = require('../controllers/auth_controller');
 
 
-router.get('/get_personal_informaion',auth.protect,userController.getPersonalInformations)
+// router.get('/get_personal_informaion',auth.protect,userController.getPersonalInformations)
 
 
 
